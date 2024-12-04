@@ -4,7 +4,7 @@
 
 html {
   font-family: Pretendard, sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   color: #464e5e;
   height: 100%;
 }
@@ -68,6 +68,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin: 0 20px;
 }
 
 .message {
@@ -82,12 +83,14 @@ header {
   align-self: flex-end;
   background: #007bff;
   color: white;
+  width: 40%;
 }
 
 .chatbot {
   align-self: flex-start;
-  background: #6c757d;
+  background: #464e5e;
   color: white;
+  width: 40%;
 }
 
 .message-input {
@@ -97,7 +100,6 @@ header {
   align-items: center;
   justify-content: center;
   bottom: 10px;
-  /* left: 400px; 사이드바 있을 때 */
   left: 0;
   right: 0;
 }
@@ -117,4 +119,27 @@ header {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.typing {
+  display: inline-block;
+  border-right: 2px solid #464e5e;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2s steps(30, end), blink 0.5s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
