@@ -1,0 +1,3 @@
+db_date/e7d44630-1251-47fe-bd50-70bb0b966155/data_level0.bin filter=lfs diff=lfs merge=lfs -text
+db_date/chroma.sqlite3 filter=lfs diff=lfs merge=lfs -text
+db_date/**/*.bin filter=lfs diff=lfs merge=lfs -text
