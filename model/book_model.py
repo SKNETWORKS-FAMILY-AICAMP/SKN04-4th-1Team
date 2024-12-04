@@ -1,5 +1,7 @@
+import re
 from dotenv import load_dotenv
 from operator import itemgetter
+from langchain.schema import Document
 from langchain.chains.query_constructor.base import AttributeInfo
 from langchain_community.document_transformers import LongContextReorder
 from langchain.retrievers import SelfQueryRetriever
@@ -77,6 +79,25 @@ def reorder_documents(documents):
     
     return documents_formatted  # 포맷팅된 문서 내용을 반환
 
+def preprocess_question(inputs, max_results=5):
+    question = inputs['question']
+    match = re.search(r"\d{4}", question)  # 질문에서 연도를 추출
+    if match:
+        # 연도 기반 검색
+        year = match.group(0)
+        query_results = retriever.vectorstore._collection.get(where={"pubdate": year})
+        documents = [
+            Document(page_content=doc, metadata=meta)
+            for doc, meta in zip(query_results["documents"], query_results["metadatas"])
+        ][:max_results]
+        return {"reference": reorder_documents(documents)}
+    else:
+        # 일반 검색 (연도 조건이 없는 경우)
+        documents = retriever.get_relevant_documents(question)  # 질의에 기반한 기본 검색
+        reordered_documents = reorder_documents(documents)  # 문서 재정렬
+        return {"reference": reordered_documents}
+
+
 
 template = '''
 너는 책에 대한 정보를 제공하는 봇이야. 
@@ -131,7 +152,8 @@ chain = (
     {
         # question을 전처리하는 단계 추가
         "question": itemgetter("question"),
-        "reference": retriever | RunnableLambda(reorder_documents),
+        #"reference": retriever | RunnableLambda(reorder_documents),
+        "reference": RunnableLambda(preprocess_question)
     }
     | prompt  # 템플릿에 데이터 결합
     | model  # 모델 호출
@@ -144,3 +166,5 @@ def get_response(input):
     })
     
     return response
+
+print(get_response("2019년에 나온 책을 알려줘"))
