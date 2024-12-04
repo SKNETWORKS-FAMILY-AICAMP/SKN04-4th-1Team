@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>채팅 페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% csrf_token %}
+</head>
+<body>
+    <h1>채팅</h1>
+    <div id="chat-box" style="border:1px solid #000; height:300px; overflow:auto;"></div>
+    <input type="text" id="message-input">
+    <button id="send-button">전송</button>
+
+    <script>
+        $(document).ready(function(){
+            $('#send-button').click(function(){
+                const message = $('#message-input').val();
+                $.ajax({
+                    url: '{% url "get_response" %}',
+                    type: 'POST',
+                    data: {
+                        'message': message,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(data){
+                        $('#chat-box').append('<p><strong>나:</strong> ' + message + '</p>');
+                        $('#chat-box').append('<p><strong>LLM:</strong> ' + data.response + '</p>');
+                        $('#message-input').val('');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
