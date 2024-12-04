@@ -66,7 +66,7 @@ class ChatbotViewTest(TestCase):
         self.assertIsNotNone(input_field)
         self.assertEqual(
             input_field['placeholder'],
-            '질문양식: 제목이 {제목}인 책에 대해서 알려줘 {작가이름} 작가의 책을 알려줘 {분야} 책을 알려줘'
+            '질문양식: 제목이 {제목}인 책에 대해서 알려줘// {제목} 책을 알려줘// 작가의 이름이 {작가이름}인 책을 알려줘 // {키워드}에 대한 책을 알려줘'
         )
 
         # 1.8 버튼이 있다.
