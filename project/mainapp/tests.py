@@ -17,6 +17,8 @@ class GetResponseViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn('response', response.json())
+        # 모델 연결하기 전, 임시 답변 테스트 모델 연결 이후에는 주석처리 
+        self.assertEqual(response.json().get('response'), '답안녕하세요')
 
     def test_get_response_invalid_method(self):
         # GET 요청으로 접근할 경우 에러 응답을 받는지 테스트
