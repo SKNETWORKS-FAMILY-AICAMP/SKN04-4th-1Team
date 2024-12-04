@@ -11,8 +11,12 @@ def chat(request):
 
 def get_response(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        user_input = data.get('message', '')
-        response = generate_response(user_input)
-        return JsonResponse({'response': response})
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+        try:
+            data = json.loads(request.body)
+            user_input = data.get('message', '')
+            response = generate_response(user_input)
+            return JsonResponse({'response': response})
+        except json.JSONDecodeError: # 잘못된 JSON 데이터로 인한 서버 오류 방지
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
