@@ -1,35 +1,115 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>채팅 페이지</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {% csrf_token %}
-</head>
-<body>
-    <h1>채팅</h1>
-    <div id="chat-box" style="border:1px solid #000; height:300px; overflow:auto;"></div>
-    <input type="text" id="message-input">
-    <button id="send-button">전송</button>
-
+{% load static %}
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📚 Enco Library Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
+    />
+    <link rel="stylesheet" href="{% static 'mainapp/style.css' %}" />
+  </head>
+  <body>
+    <header>📚 Enco Library</header>
+    <main>
+      <div class="container">
+        <!-- <div class="sidebar">
+          <div class="log-title">📑 대화 기록</div>
+          <div class="chat-log"></div>
+        </div> -->
+        <div class="chat-room">
+          <div class="chatting" id="chatting"></div>
+          <div class="message-input">
+            <input
+              type="text"
+              id="user-input"
+              placeholder="질문양식: 제목이 {제목}인 책에 대해서 알려줘 {작가이름} 작가의 책을 알려줘 {분야} 책을 알려줘"
+            />
+            <button onclick="sendMessage()">전송</button>
+          </div>
+        </div>
+      </div>
+    </main>
     <script>
-        $(document).ready(function(){
-            $('#send-button').click(function(){
-                const message = $('#message-input').val();
-                $.ajax({
-                    url: '{% url "get_response" %}',
-                    type: 'POST',
-                    data: {
-                        'message': message,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(data){
-                        $('#chat-box').append('<p><strong>나:</strong> ' + message + '</p>');
-                        $('#chat-box').append('<p><strong>LLM:</strong> ' + data.response + '</p>');
-                        $('#message-input').val('');
-                    }
-                });
+      let currentChat = [];
+      let chatHistory = [];
+      const userInput = document.getElementById("user-input");
+      const chatting = document.getElementById("chatting");
+      const chatLog = document.querySelector(".chat-log");
+
+      // 메시지 추가
+      function appendMessage(content, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", sender);
+        messageDiv.textContent = content;
+        chatting.appendChild(messageDiv);
+        chatting.scrollTop = chatting.scrollHeight;
+      }
+
+      // 메시지 전송
+      function sendMessage() {
+        const userMessage = userInput.value.trim();
+        if (userMessage) {
+          appendMessage(userMessage, "user");
+          currentChat.push({ sender: "user", content: userMessage });
+
+          userInput.value = "";
+          setTimeout(() => {
+            const chatbotMessage = chatbotResponse(userMessage);
+            appendMessage(chatbotMessage, "chatbot");
+            currentChat.push({
+              sender: "chatbot",
+              content: chatbotMessage,
             });
+          }, 500);
+        }
+      }
+
+      userInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // 예시 응답 생성
+      function chatbotResponse(userMessage) {
+        let response = "Enco Library 챗봇입니다.";
+        //saveChatHistory();
+        return response;
+      }
+
+      // 대화 기록 저장
+      function saveChatHistory() {
+        if (currentChat.length > 0) {
+          chatHistory.push([...currentChat]);
+
+          const historyItem = document.createElement("div");
+          historyItem.classList.add("history-item");
+          historyItem.textContent = `Chat ${chatHistory.length}`;
+          historyItem.onclick = () => loadSelectedChat(chatHistory.length - 1);
+
+          chatLog.appendChild(historyItem);
+          currentChat = [];
+        }
+      }
+
+      // 선택한 대화 기록 불러오기
+      function loadSelectedChat(index) {
+        chatting.innerHTML = "";
+
+        // 선택한 대화의 질문과 답변만 표시
+        const selectedChat = chatHistory[index];
+        selectedChat.forEach((entry) => {
+          appendMessage(entry.content, entry.sender);
         });
+      }
     </script>
-</body>
+  </body>
 </html>
