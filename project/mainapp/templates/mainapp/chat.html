@@ -59,7 +59,8 @@
           //글자 효과 추가하기
           function typeEffect() {
             if (index < content.length) {
-              typingSpan.textContent += content[index];
+              //typingSpan.textContent += content[index];
+              typingSpan.innerHTML = content.slice(0, index + 1);  
               index++;
               setTimeout(typeEffect, 50);
             }
