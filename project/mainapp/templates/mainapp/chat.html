@@ -14,7 +14,7 @@
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
     />
     <link rel="stylesheet" href="{% static 'mainapp/style.css' %}" />
-    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="csrf-token" content="{{ csrf_token }}" />
   </head>
   <body>
     <header>📚 Enco Library</header>
@@ -48,9 +48,30 @@
       function appendMessage(content, sender) {
         const messageDiv = document.createElement("div");
         messageDiv.classList.add("message", sender);
-        messageDiv.textContent = content;
-        chatting.appendChild(messageDiv);
-        chatting.scrollTop = chatting.scrollHeight;
+
+        if (sender === "chatbot") {
+          const typingSpan = document.createElement("span");
+          messageDiv.appendChild(typingSpan);
+          chatting.appendChild(messageDiv);
+
+          let index = 0;
+
+          //글자 효과 추가하기
+          function typeEffect() {
+            if (index < content.length) {
+              typingSpan.textContent += content[index];
+              index++;
+              setTimeout(typeEffect, 50);
+            }
+          }
+
+          typeEffect();
+        } else {
+          messageDiv.textContent = content;
+          chatting.appendChild(messageDiv);
+        }
+
+        chatting.scrollTop = chatting.scrollHeight; // 스크롤 유지
       }
 
       // 메시지 전송
@@ -61,7 +82,9 @@
           currentChat.push({ sender: "user", content: userMessage });
 
           userInput.value = "";
-          const csrfToken = document.querySelector('meta[name="csrf-token"]').content
+          const csrfToken = document.querySelector(
+            'meta[name="csrf-token"]'
+          ).content;
 
           fetch("{% url 'get_response' %}", {
             method: "POST",
@@ -69,25 +92,25 @@
               "Content-Type": "application/json",
               "X-CSRFToken": csrfToken,
             },
-            body: JSON.stringify({ message: userMessage})
+            body: JSON.stringify({ message: userMessage }),
           })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.response) {
-              const chatbotMessage = data.response;
-              appendMessage(chatbotMessage, "chatbot");
-              currentChat.push({
-                sender: "chatbot",
-                content: chatbotMessage,
-              });
-            } else {
-              appendMessage("오류가 발생했습니다", "chatbot")
-            }
-          })
-          .catch((error) => {
-            console.error("Error", error);
-            appendMessage("서버와 통신 중 오류가 발생했습니다", "chatbot")
-          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.response) {
+                const chatbotMessage = data.response;
+                appendMessage(chatbotMessage, "chatbot");
+                currentChat.push({
+                  sender: "chatbot",
+                  content: chatbotMessage,
+                });
+              } else {
+                appendMessage("오류가 발생했습니다", "chatbot");
+              }
+            })
+            .catch((error) => {
+              console.error("Error", error);
+              appendMessage("서버와 통신 중 오류가 발생했습니다", "chatbot");
+            });
         }
       }
 
@@ -97,31 +120,6 @@
           sendMessage();
         }
       });
-      // // 대화 기록 저장
-      // function saveChatHistory() {
-      //   if (currentChat.length > 0) {
-      //     chatHistory.push([...currentChat]);
-
-      //     const historyItem = document.createElement("div");
-      //     historyItem.classList.add("history-item");
-      //     historyItem.textContent = `Chat ${chatHistory.length}`;
-      //     historyItem.onclick = () => loadSelectedChat(chatHistory.length - 1);
-
-      //     chatLog.appendChild(historyItem);
-      //     currentChat = [];
-      //   }
-      // }
-
-      // // 선택한 대화 기록 불러오기
-      // function loadSelectedChat(index) {
-      //   chatting.innerHTML = "";
-
-      //   // 선택한 대화의 질문과 답변만 표시
-      //   const selectedChat = chatHistory[index];
-      //   selectedChat.forEach((entry) => {
-      //     appendMessage(entry.content, entry.sender);
-      //   });
-      // }
     </script>
   </body>
 </html>
