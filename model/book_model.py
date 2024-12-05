@@ -17,7 +17,7 @@ from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
 # 이미 저장된 벡터 데이터베이스 불러오기
-persist_directory = '../db_date'  # 저장된 데이터베이스 경로
+persist_directory = './db_date'  # 저장된 데이터베이스 경로
 collection_name = 'books_date'  # 사용했던 collection 이름
 
 # 벡터 데이터베이스 로드
