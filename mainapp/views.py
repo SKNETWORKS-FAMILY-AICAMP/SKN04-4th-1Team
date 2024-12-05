@@ -1,7 +1,14 @@
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+# current_dir = os.path.dirname(os.path.abspath(__file__)) 
+# print(current_dir)
+# a_folder_path = os.path.abspath(os.path.join(current_dir, '../../model')) 
+# print(a_folder_path)
+# sys.path.append('/home/ubuntu/SKN04-4th-1Team/model/')
+# import book_model
+
 from model import book_model
+
 from django.shortcuts import render
 from django.http import JsonResponse
 import json

@@ -167,4 +167,4 @@ def get_response(input):
     
     return response
 
-print(get_response("2019년에 나온 책을 알려줘"))
+#print(get_response("2019년에 나온 책을 알려줘"))
