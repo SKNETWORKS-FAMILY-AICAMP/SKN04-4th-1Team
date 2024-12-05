@@ -67,7 +67,7 @@ pip install -r requirements.txt, langchain을 이용하기위한 .env파일 정�
 ```cmd
 python manage.py runserver
 ```
-
+### 실행 환경
 ```
 AWS 내의 docker 환경에서 실행
 - t2.medium 4GiB 메모리
