@@ -44,8 +44,7 @@
       const chatting = document.getElementById("chatting");
       const chatLog = document.querySelector(".chat-log");
 
-      // 메시지 추가
-      function appendMessage(content, sender) {
+      function appendMessage(content, sender, isLoading = false) {
         const messageDiv = document.createElement("div");
         messageDiv.classList.add("message", sender);
 
@@ -54,19 +53,26 @@
           messageDiv.appendChild(typingSpan);
           chatting.appendChild(messageDiv);
 
-          let index = 0;
+          if (isLoading) {
+            const spinner = document.createElement("div");
+            spinner.classList.add("loading-spinner"); // 로딩 애니메이션 추가
+            //spinner.textContent = "응답을 생성중입니다. 잠시만 기다려주세요!";
+            messageDiv.appendChild(spinner);
+            chatting.appendChild(messageDiv);
+          } else {
+            let index = 0;
 
-          //글자 효과 추가하기
-          function typeEffect() {
-            if (index < content.length) {
-              //typingSpan.textContent += content[index];
-              typingSpan.innerHTML = content.slice(0, index + 1);  
-              index++;
-              setTimeout(typeEffect, 50);
+            // 글자 효과 추가하기
+            function typeEffect() {
+              if (index < content.length) {
+                typingSpan.innerHTML = content.slice(0, index + 1);
+                index++;
+                setTimeout(typeEffect, 50);
+              }
             }
-          }
 
-          typeEffect();
+            typeEffect();
+          }
         } else {
           messageDiv.textContent = content;
           chatting.appendChild(messageDiv);
@@ -82,10 +88,16 @@
           appendMessage(userMessage, "user");
           currentChat.push({ sender: "user", content: userMessage });
 
+          // 입력창 비활성화
+          userInput.disabled = true;
+
           userInput.value = "";
           const csrfToken = document.querySelector(
             'meta[name="csrf-token"]'
           ).content;
+
+          appendMessage("", "chatbot", true);
+          const loadingMessageDiv = chatting.lastChild;
 
           fetch("{% url 'get_response' %}", {
             method: "POST",
@@ -97,6 +109,8 @@
           })
             .then((response) => response.json())
             .then((data) => {
+              chatting.removeChild(loadingMessageDiv); // 로딩 상태 제거
+              userInput.disabled = false; // 입력창 다시 활성화
               if (data.response) {
                 const chatbotMessage = data.response;
                 appendMessage(chatbotMessage, "chatbot");
@@ -109,12 +123,15 @@
               }
             })
             .catch((error) => {
+              chatting.removeChild(loadingMessageDiv);
+              userInput.disabled = false;
               console.error("Error", error);
               appendMessage("서버와 통신 중 오류가 발생했습니다", "chatbot");
             });
         }
       }
 
+      //엔터를 눌러도 전송이 되도록 함
       userInput.addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
           event.preventDefault();
