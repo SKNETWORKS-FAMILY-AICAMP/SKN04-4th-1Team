@@ -24,7 +24,7 @@ hallucination이 없는 챗봇 시스템 페이지 구현
 
 'Enco Library Chatbot'은 'Enco Library'가 소장한 도서에 대해 검색을 했을 때 hallucination이 없는 답변을 제공하는 채팅 페이지를 보여주는 것을 목표로 합니다.
 
-<hr>
+<hr> 
 
 ### 🔨 기술 스택
 
@@ -100,8 +100,8 @@ _data column_
 
 ### Preprocess
 
-국립중앙도서관에서 약 20,000개의 책 제목만 추출하여,
-네이버 책 api를 통해 제목, 작가, 출판사, 출판연도, 책소개를 크롤링하여 데이터를 만들었습니다
+국립중앙도서관의 약 20,000개의 책 데이터에서 책 제목만 추출하여,
+추출한 제목을 가지고 네이버 책 api를 통해 제목, 작가, 출판사, 출판연도, 책소개를 크롤링하여 데이터를 만들었습니다.
 
 <hr>
 
@@ -113,16 +113,41 @@ _data column_
 
 ### 수행 결과
 
+#### 요구사항 정의서
+<img src='./img/screen_infor.png'> <br>
+
+#### 화면 설계서
+<img src='./img/screen.png'> <br>
+
+#### 실행 결과
+-해당 주제 관련 책 추천
+<img src='./img/page.png'> <br>
+-해당 저자가 쓴 책 찾기
+<img src='./img/page_author.png'> <br>
+-해당 제목을 가진 책 찾기
+<img src='./img/page_subject.png'> <br>
+
+#### Hallucination
+
+-gpt-4o-mini
+<img src='./img/hallucination.png'> <br>
+-튜닝된 모델
+<img src='./img/hallucination_fixed.png'> <br>
+
+
+
+튜닝 전의 GPT에서 책에 대한 추천이나 정보를 물어봤을 때, 존재하지 않는 책을 추천해주는 등 제대로 답변이 나오지 않는 Hallucination 발생했었습니다. 그러나 프로젝트를 진행하면서 데이터에 존재하는 책들에 대한 추천과 설명을 확실하게 해주며 없는 책에 대한 것은 없으면 없다고 응답해주도록 모델을 튜닝했고 웹을 만들며 배포까지 성공적으로 마쳤습니다.
+
 <hr>
 
 ### 한 줄 회고
 
 오정연 -
 <br>
-이호재 -
+이호재 - 
 <br>
 변가원 - 최종 플젝까지 화이팅!
 <br>
-이진섭 - 이젠 최종 플젝만 남았구나... 풀스택 가보자고..
+이진섭 - 경로 관리가 힘드네요.
 <br>
 김태욱 - aws를 통해 프로젝트를 진행할 수 있어서 좋았다.
