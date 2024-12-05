@@ -4,11 +4,11 @@
 
 ### 🐿️ 팀원
 
-|                                                        오정연                                                        |                                                        이호재                                                        |                                                        변가원                                                        |                                                        이진섭                                                        |                                                        김태욱                                                        |
-| :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://github.com/user-attachments/assets/d920daaf-3baa-441d-ab1c-babb240b307b" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/23848016-2562-40b7-82ad-69c0edc6c8cb" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/a2497f47-8214-43c4-81f3-ed3ee637bbf5" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/90d30dde-dfe5-4929-938f-2941dec79d65" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/60a82e31-52ef-4de3-8d52-a50037491b56" width="140" height="140"> |
-|                                       [@Jungyunn](https://github.com/Jungyunn)                                       |                                           [@HoJL](https://github.com/HoJL)                                           |                                         [@dnjsrk](https://github.com/dnjsrk)                                         |                                        [@jururuj](https://github.com/jururuj)                                        |                                      [@Taeuk-Dog](https://github.com/Taeuk-Dog)                                      |
-|                                              **Project Leader**<br/>LLM<br>AWS                                            |                                                Lead Developer <br>Backend<br>AWS                                                  |                                                 Frontend <br>ReadMe                                                  |                                                  Backend<br>ReadMe                                                   |                                                         AWS                                                          |
+|                                                        오정연                                                        |                         이호재                          |                                                        변가원                                                        |                                                        이진섭                                                        |                       김태욱                        |
+| :------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------: |
+| <img src="https://github.com/user-attachments/assets/d920daaf-3baa-441d-ab1c-babb240b307b" width="140" height="140"> | <img src="./img/호재님짱.png" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/a2497f47-8214-43c4-81f3-ed3ee637bbf5" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/90d30dde-dfe5-4929-938f-2941dec79d65" width="140" height="140"> | <img src="./img/태욱.png" width="140" height="140"> |
+|                                       [@Jungyunn](https://github.com/Jungyunn)                                       |            [@HoJL](https://github.com/HoJL)             |                                         [@dnjsrk](https://github.com/dnjsrk)                                         |                                        [@jururuj](https://github.com/jururuj)                                        |     [@Taeuk-Dog](https://github.com/Taeuk-Dog)      |
+|                                          **Project Leader**<br/>LLM<br>AWS                                           |            Lead Developer <br>Backend<br>AWS            |                                                 Frontend <br>ReadMe                                                  |                                                  Backend<br>ReadMe                                                   |                         AWS                         |
 
 </div>
 
@@ -24,7 +24,7 @@ hallucination이 없는 챗봇 시스템 페이지 구현
 
 'Enco Library Chatbot'은 'Enco Library'가 소장한 도서에 대해 검색을 했을 때 hallucination이 없는 답변을 제공하는 채팅 페이지를 보여주는 것을 목표로 합니다.
 
-<hr> 
+<hr>
 
 ### 🔨 기술 스택
 
@@ -36,6 +36,7 @@ _Environment_
 <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=for-the-badge&logo=Visual Studio Code&logoColor=white"/>
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"/>
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"/>
+<img src="https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
 
 _Development_
 <br><br>
@@ -67,6 +68,12 @@ pip install -r requirements.txt, langchain을 이용하기위한 .env파일 정�
 python manage.py runserver
 ```
 
+```
+AWS 내의 docker 환경에서 실행
+- t2.medium 4GiB 메모리
+- 80GiB 스토리지 사용
+```
+
 <hr>
 
 ### Data
@@ -94,6 +101,9 @@ _data column_
 "description": 책소개
 ```
 
+_ERD_
+<img src='./img/erd.png'>
+
 <br>
 
 <hr>
@@ -114,27 +124,25 @@ _data column_
 ### 수행 결과
 
 #### 요구사항 정의서
+
 <img src='./img/screen_infor.png'> <br>
 
 #### 화면 설계서
+
 <img src='./img/screen.png'> <br>
 
 #### 실행 결과
+
 -해당 주제 관련 책 추천
-<img src='./img/page.png'> <br>
--해당 저자가 쓴 책 찾기
-<img src='./img/page_author.png'> <br>
--해당 제목을 가진 책 찾기
+<img src='./img/page.png'> <br> -해당 저자가 쓴 책 찾기
+<img src='./img/page_author.png'> <br> -해당 제목을 가진 책 찾기
 <img src='./img/page_subject.png'> <br>
 
 #### Hallucination
 
 -gpt-4o-mini
-<img src='./img/hallucination.png'> <br>
--튜닝된 모델
+<img src='./img/hallucination.png'> <br> -튜닝된 모델
 <img src='./img/hallucination_fixed.png'> <br>
-
-
 
 튜닝 전의 GPT에서 책에 대한 추천이나 정보를 물어봤을 때, 존재하지 않는 책을 추천해주는 등 제대로 답변이 나오지 않는 Hallucination 발생했었습니다. 그러나 프로젝트를 진행하면서 데이터에 존재하는 책들에 대한 추천과 설명을 확실하게 해주며 없는 책에 대한 것은 없으면 없다고 응답해주도록 모델을 튜닝했고 웹을 만들며 배포까지 성공적으로 마쳤습니다.
 
@@ -142,7 +150,7 @@ _data column_
 
 ### 한 줄 회고
 
-오정연 - 코드는 틀리지 않았고 내가 틀렸다.  지금까지 한 단위 프로젝트 중 가장 다사다난했지만 끝마칠 수 있어서 행복했습니다 우리팀 최고
+오정연 - 코드는 틀리지 않았고 내가 틀렸다. 지금까지 한 단위 프로젝트 중 가장 다사다난했지만 끝마칠 수 있어서 행복했습니다 우리팀 최고
 <br>
 이호재 - Lead Developer로 Backend와 AWS를 맡아 프로젝트를 성공적으로 완료하며 많은 것을 배웠습니다.
 <br>
