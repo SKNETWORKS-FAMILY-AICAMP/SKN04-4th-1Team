@@ -8,7 +8,7 @@
 | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/d920daaf-3baa-441d-ab1c-babb240b307b" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/23848016-2562-40b7-82ad-69c0edc6c8cb" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/a2497f47-8214-43c4-81f3-ed3ee637bbf5" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/90d30dde-dfe5-4929-938f-2941dec79d65" width="140" height="140"> | <img src="https://github.com/user-attachments/assets/60a82e31-52ef-4de3-8d52-a50037491b56" width="140" height="140"> |
 |                                       [@Jungyunn](https://github.com/Jungyunn)                                       |                                           [@HoJL](https://github.com/HoJL)                                           |                                         [@dnjsrk](https://github.com/dnjsrk)                                         |                                        [@jururuj](https://github.com/jururuj)                                        |                                      [@Taeuk-Dog](https://github.com/Taeuk-Dog)                                      |
-|                                              **Project Leader**<br/>LLM                                              |                                                LLM<br>Data Debugging                                                 |                                                 Frontend <br>ReadMe                                                  |                                                  Backend<br>ReadMe                                                   |                                                         AWS                                                          |
+|                                              **Project Leader**<br/>LLM<br>AWS                                            |                                                Lead Developer <br>Backend<br>AWS                                                  |                                                 Frontend <br>ReadMe                                                  |                                                  Backend<br>ReadMe                                                   |                                                         AWS                                                          |
 
 </div>
 
@@ -142,12 +142,12 @@ _data column_
 
 ### 한 줄 회고
 
-오정연 -
+오정연 - 코드는 틀리지 않았고 내가 틀렸다.  지금까지 한 단위 프로젝트 중 가장 다사다난했지만 끝마칠 수 있어서 행복했습니다 우리팀 최고
 <br>
-이호재 - 
+이호재 - Lead Developer로 Backend와 AWS를 맡아 프로젝트를 성공적으로 완료하며 많은 것을 배웠습니다.
 <br>
-변가원 - 최종 플젝까지 화이팅!
+변가원 - 최종 플젝까지 화이팅! 다들 수고하셨습니다.
 <br>
 이진섭 - 경로 관리가 힘드네요.
 <br>
-김태욱 - aws를 통해 프로젝트를 진행할 수 있어서 좋았다.
+김태욱 - aws를 통해 프로젝트를 진행할 수 있어서 좋았습니다.
