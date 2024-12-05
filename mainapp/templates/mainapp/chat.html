@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📚 Enco Library Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
+    />
+    <link rel="stylesheet" href="{% static 'mainapp/style.css' %}" />
+    <meta name="csrf-token" content="{{ csrf_token }}" />
+  </head>
+  <body>
+    <header>📚 Enco Library</header>
+    <main>
+      <div class="container">
+        <!-- <div class="sidebar">
+          <div class="log-title">📑 대화 기록</div>
+          <div class="chat-log"></div>
+        </div> -->
+        <div class="chat-room">
+          <div class="chatting" id="chatting"></div>
+          <div class="message-input">
+            <input
+              type="text"
+              id="user-input"
+              placeholder="질문양식: 제목이 {제목}인 책에 대해서 알려줘// {제목} 책을 알려줘// 작가의 이름이 {작가이름}인 책을 알려줘 // {키워드}에 대한 책을 알려줘"
+            />
+            <button onclick="sendMessage()">전송</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      let currentChat = [];
+      let chatHistory = [];
+      const userInput = document.getElementById("user-input");
+      const chatting = document.getElementById("chatting");
+      const chatLog = document.querySelector(".chat-log");
+
+      function appendMessage(content, sender, isLoading = false) {
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", sender);
+
+        if (sender === "chatbot") {
+          const typingSpan = document.createElement("span");
+          messageDiv.appendChild(typingSpan);
+          chatting.appendChild(messageDiv);
+
+          if (isLoading) {
+            const spinner = document.createElement("div");
+            spinner.classList.add("loading-spinner"); // 로딩 애니메이션 추가
+            //spinner.textContent = "응답을 생성중입니다. 잠시만 기다려주세요!";
+            messageDiv.appendChild(spinner);
+            chatting.appendChild(messageDiv);
+          } else {
+            let index = 0;
+
+            // 글자 효과 추가하기
+            function typeEffect() {
+              if (index < content.length) {
+                typingSpan.innerHTML = content.slice(0, index + 1);
+                index++;
+                setTimeout(typeEffect, 50);
+              }
+            }
+
+            typeEffect();
+          }
+        } else {
+          messageDiv.textContent = content;
+          chatting.appendChild(messageDiv);
+        }
+
+        chatting.scrollTop = chatting.scrollHeight; // 스크롤 유지
+      }
+
+      // 메시지 전송
+      function sendMessage() {
+        const userMessage = userInput.value.trim();
+        if (userMessage) {
+          appendMessage(userMessage, "user");
+          currentChat.push({ sender: "user", content: userMessage });
+
+          // 입력창 비활성화
+          userInput.disabled = true;
+
+          userInput.value = "";
+          const csrfToken = document.querySelector(
+            'meta[name="csrf-token"]'
+          ).content;
+
+          appendMessage("", "chatbot", true);
+          const loadingMessageDiv = chatting.lastChild;
+
+          fetch("{% url 'get_response' %}", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({ message: userMessage }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              chatting.removeChild(loadingMessageDiv); // 로딩 상태 제거
+              userInput.disabled = false; // 입력창 다시 활성화
+              if (data.response) {
+                const chatbotMessage = data.response;
+                appendMessage(chatbotMessage, "chatbot");
+                currentChat.push({
+                  sender: "chatbot",
+                  content: chatbotMessage,
+                });
+              } else {
+                appendMessage("오류가 발생했습니다", "chatbot");
+              }
+            })
+            .catch((error) => {
+              chatting.removeChild(loadingMessageDiv);
+              userInput.disabled = false;
+              console.error("Error", error);
+              appendMessage("서버와 통신 중 오류가 발생했습니다", "chatbot");
+            });
+        }
+      }
+
+      //엔터를 눌러도 전송이 되도록 함
+      userInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          sendMessage();
+        }
+      });
+    </script>
+  </body>
+</html>
